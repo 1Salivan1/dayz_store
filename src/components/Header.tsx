@@ -1,11 +1,15 @@
 import { Link } from "react-router-dom";
+import "../style/header.css";
 
 function Header() {
   return (
-    <nav>
-      <p>
-        <Link to="">Рынок</Link>
-      </p>
+    <nav className="nav">
+      <Link className="nav__item" to="">
+        Рынок
+      </Link>
+      <Link className="nav__item" to="">
+        Топ продавцов
+      </Link>
     </nav>
   );
 }

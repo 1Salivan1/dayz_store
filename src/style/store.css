@@ -1,0 +1,11 @@
+.store-offers {
+  display: flex;
+}
+
+.wrapper {
+  padding: 0px 80px;
+}
+
+.store-offers {
+  padding: 20px 40px;
+}
