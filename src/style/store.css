@@ -1,9 +1,30 @@
 .store-offers {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .wrapper {
   padding: 0px 80px;
+}
+
+.store-search__input {
+  margin-right: 15px;
+  height: 20px;
+  border-radius: 10px;
+  border: none;
+  padding: 10px;
+}
+
+.store-search__select {
+  padding: 10px;
+  border: none;
+  border-radius: 10px;
+  background-color: transparent;
+  color: white;
+}
+
+option {
+  color: black;
 }
 
 .store-offers {
