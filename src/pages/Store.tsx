@@ -1,6 +1,6 @@
 import React, { useEffect, ChangeEvent } from "react";
 import axios from "axios";
-import CardProduct from "../components/CardProduct";
+import ProductCard from "../components/ProductCard";
 import "../style/store.css";
 
 interface IItem {
@@ -25,6 +25,7 @@ function Store() {
       .get(url)
       .then((response) => {
         setGoods(response.data);
+        setCurrentData(response.data);
       })
       .catch((error) => {
         console.error("Ошибка при получении данных");
@@ -74,6 +75,12 @@ function Store() {
             <option value="food">Еда</option>
             <option value="transport">Транспорт</option>
           </select>
+
+          <select className="store-search__select" name="" id="">
+            <option value="all">По названию</option>
+            <option value="quantity">По количеству</option>
+            <option value="cost">По цене</option>
+          </select>
         </div>
         <div className="store-offers">
           {currentData
@@ -83,14 +90,13 @@ function Store() {
                 : el.name.toLowerCase().includes(input.toLowerCase());
             })
             .map((item) => (
-              <CardProduct
-                key={item.id}
+              <ProductCard
                 id={item.id}
                 image={item.image}
                 name={item.name}
+                type={item.type}
                 quantity={item.quantity}
                 price={item.price}
-                type={item.type}
                 user={item.user}
               />
             ))}

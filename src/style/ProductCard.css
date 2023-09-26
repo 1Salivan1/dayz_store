@@ -1,0 +1,53 @@
+.card {
+  width: 100%;
+  background-color: rgb(92, 92, 92);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  max-height: 200px;
+  text-align: left;
+}
+
+.card-info {
+  display: flex;
+  align-items: center;
+}
+
+.card-paragraph {
+  display: flex;
+  align-items: center;
+}
+
+.card-right {
+  display: flex;
+}
+
+.item {
+  margin-right: 100px;
+}
+
+.card-img {
+  max-height: 100%;
+  max-width: 100px;
+  margin-right: 200px;
+}
+
+.text-item {
+  width: 150px;
+}
+
+.card-user {
+  margin-right: 15px;
+}
+
+.card-user {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+p {
+  text-align: left;
+}
