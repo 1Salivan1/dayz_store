@@ -83,6 +83,11 @@ function Store() {
           </select>
         </div>
         <div className="store-offers">
+          <div className="sort">
+            <p className="sort-by-name sort-item">По названию</p>
+            <p className="sort-by-count sort-item">По количеству</p>
+            <p className="sort-by-price sort-item">По цене</p>
+          </div>
           {currentData
             .filter((el) => {
               return input.toLowerCase() === ""

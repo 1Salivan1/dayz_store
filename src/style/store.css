@@ -25,3 +25,19 @@ option {
 .store-offers {
   padding: 20px 40px;
 }
+
+.sort {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 10px;
+  padding: 0px 10px;
+}
+
+.sort-by-name {
+  grid-column-start: 2;
+  text-align: left;
+}
+
+.sort-item {
+  text-align: center;
+}
