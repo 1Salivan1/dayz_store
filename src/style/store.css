@@ -40,4 +40,9 @@ option {
 
 .sort-item {
   text-align: center;
+  cursor: pointer;
+}
+
+.sort-by-count-active::after {
+  content: " ↓";
 }

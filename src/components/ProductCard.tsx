@@ -16,8 +16,8 @@ function ProductCard(props: IProductCardProps) {
     <div className="card">
       <img src={props.image} alt="" className="card-img" />
       <h2 className="card-header">{props.name}</h2>
-      <p className="card-quantity card-item">{props.quantity}</p>
-      <p className="card-price card-item">{props.price}</p>
+      <p className="card-quantity card-item">x {props.quantity}</p>
+      <p className="card-price card-item">{props.price}$</p>
       <p className="card-user card-item">{props.user}</p>
       <div className="button-block">
         <button className="card-button">Купить</button>

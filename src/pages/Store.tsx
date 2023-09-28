@@ -29,7 +29,8 @@ function Store() {
       })
       .catch((error) => {
         console.error("Ошибка при получении данных");
-      });
+      })
+      .finally(() => console.log("currentData"));
   }, [url]);
 
   // Поиск товаров через инпут
@@ -37,6 +38,7 @@ function Store() {
     item.name.toLowerCase().includes(input.toLowerCase())
   );
 
+  // Сортировка товаров с помощью select
   const selectSort = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value == "all") {
       setCurrentData(goods);
@@ -48,6 +50,27 @@ function Store() {
       setCurrentData(goods.filter((e) => e.type == "food"));
     } else if (e.target.value.toLowerCase() == "transport") {
       setCurrentData(goods.filter((e) => e.type == "transport"));
+    }
+  };
+
+  const sortByName = () => {
+    if (currentData.length > 0) {
+      currentData.sort((x, y) => x.name.localeCompare(y.name));
+      setCurrentData([...currentData]);
+    }
+  };
+
+  const sortByQuantity = () => {
+    if (currentData.length > 0) {
+      currentData.sort((x, y) => y.quantity - x.quantity);
+      setCurrentData([...currentData]);
+    }
+  };
+
+  const sortByPrice = () => {
+    if (currentData.length > 0) {
+      currentData.sort((x, y) => x.price - y.price);
+      setCurrentData([...currentData]);
     }
   };
 
@@ -75,18 +98,18 @@ function Store() {
             <option value="food">Еда</option>
             <option value="transport">Транспорт</option>
           </select>
-
-          <select className="store-search__select" name="" id="">
-            <option value="all">По названию</option>
-            <option value="quantity">По количеству</option>
-            <option value="cost">По цене</option>
-          </select>
         </div>
         <div className="store-offers">
           <div className="sort">
-            <p className="sort-by-name sort-item">По названию</p>
-            <p className="sort-by-count sort-item">По количеству</p>
-            <p className="sort-by-price sort-item">По цене</p>
+            <p className="sort-by-name sort-item" onClick={sortByName}>
+              По названию
+            </p>
+            <p className="sort-by-count sort-item" onClick={sortByQuantity}>
+              По количеству
+            </p>
+            <p className="sort-by-price sort-item" onClick={sortByPrice}>
+              По цене
+            </p>
           </div>
           {currentData
             .filter((el) => {
@@ -97,6 +120,7 @@ function Store() {
             .map((item) => (
               <ProductCard
                 id={item.id}
+                key={item.id}
                 image={item.image}
                 name={item.name}
                 type={item.type}
