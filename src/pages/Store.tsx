@@ -60,17 +60,31 @@ function Store() {
     }
   };
 
+  const [sortByQuantityToggle, setSortByQuantityToggle] =
+    React.useState<boolean>(false);
   const sortByQuantity = () => {
-    if (currentData.length > 0) {
+    if (currentData.length > 0 && sortByQuantityToggle === false) {
       currentData.sort((x, y) => y.quantity - x.quantity);
       setCurrentData([...currentData]);
+      setSortByQuantityToggle(true);
+    } else {
+      currentData.sort((x, y) => x.quantity - y.quantity);
+      setCurrentData([...currentData]);
+      setSortByQuantityToggle(false);
     }
   };
 
+  const [sortByPriceToggle, setSortByPriceToggle] =
+    React.useState<boolean>(false);
   const sortByPrice = () => {
-    if (currentData.length > 0) {
+    if (currentData.length > 0 && sortByPriceToggle === false) {
       currentData.sort((x, y) => x.price - y.price);
       setCurrentData([...currentData]);
+      setSortByPriceToggle(true);
+    } else {
+      currentData.sort((x, y) => y.price - x.price);
+      setCurrentData([...currentData]);
+      setSortByPriceToggle(false);
     }
   };
 

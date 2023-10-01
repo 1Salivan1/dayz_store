@@ -42,7 +42,3 @@ option {
   text-align: center;
   cursor: pointer;
 }
-
-.sort-by-count-active::after {
-  content: " ↓";
-}
