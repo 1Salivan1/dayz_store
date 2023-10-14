@@ -42,3 +42,15 @@ option {
   text-align: center;
   cursor: pointer;
 }
+
+.by-top::after {
+  content: "↑";
+  color: white;
+  margin-left: 5px;
+}
+
+.by-down::after {
+  content: "↓";
+  color: white;
+  margin-left: 5px;
+}

@@ -53,38 +53,51 @@ function Store() {
     }
   };
 
+  // Сортировка по названию
   const sortByName = () => {
+    setByPrice(1);
+    setByQuantity(1);
     if (currentData.length > 0) {
       currentData.sort((x, y) => x.name.localeCompare(y.name));
       setCurrentData([...currentData]);
     }
   };
 
+  // Сортировка по количеству
   const [sortByQuantityToggle, setSortByQuantityToggle] =
     React.useState<boolean>(false);
+  const [byQuantity, setByQuantity] = React.useState<number>(1); // Переключатель 0 - ↑, 1 - нейтрально, 2 - ↓.
   const sortByQuantity = () => {
+    setByPrice(1); // Нейтральное положение остальных сортировок
     if (currentData.length > 0 && sortByQuantityToggle === false) {
-      currentData.sort((x, y) => y.quantity - x.quantity);
-      setCurrentData([...currentData]);
-      setSortByQuantityToggle(true);
-    } else {
       currentData.sort((x, y) => x.quantity - y.quantity);
       setCurrentData([...currentData]);
+      setSortByQuantityToggle(true);
+      setByQuantity(0);
+    } else {
+      currentData.sort((x, y) => y.quantity - x.quantity);
+      setCurrentData([...currentData]);
       setSortByQuantityToggle(false);
+      setByQuantity(2);
     }
   };
 
+  // Сортировка по цене
   const [sortByPriceToggle, setSortByPriceToggle] =
     React.useState<boolean>(false);
+  const [byPrice, setByPrice] = React.useState<number>(1); // Переключатель 0 - ↑, 1 - нейтрально, 2 - ↓.
   const sortByPrice = () => {
+    setByQuantity(1); // Нейтральное положение остальных сортировок
     if (currentData.length > 0 && sortByPriceToggle === false) {
       currentData.sort((x, y) => x.price - y.price);
       setCurrentData([...currentData]);
       setSortByPriceToggle(true);
+      setByPrice(0);
     } else {
       currentData.sort((x, y) => y.price - x.price);
       setCurrentData([...currentData]);
       setSortByPriceToggle(false);
+      setByPrice(2);
     }
   };
 
@@ -118,10 +131,20 @@ function Store() {
             <p className="sort-by-name sort-item" onClick={sortByName}>
               По названию
             </p>
-            <p className="sort-by-count sort-item" onClick={sortByQuantity}>
+            <p
+              className={`sort-by-price sort-item ${
+                byQuantity === 0 ? "by-top" : byQuantity === 2 ? "by-down" : ""
+              }`}
+              onClick={sortByQuantity}
+            >
               По количеству
             </p>
-            <p className="sort-by-price sort-item" onClick={sortByPrice}>
+            <p
+              className={`sort-by-price sort-item ${
+                byPrice === 0 ? "by-top" : byPrice === 2 ? "by-down" : ""
+              }`}
+              onClick={sortByPrice}
+            >
               По цене
             </p>
           </div>
