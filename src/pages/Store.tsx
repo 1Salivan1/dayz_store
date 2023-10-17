@@ -2,6 +2,7 @@ import React, { useEffect, ChangeEvent } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import "../style/store.css";
+import OrderWindow from "../components/OrderWindow";
 
 interface IItem {
   id: number;
@@ -166,6 +167,7 @@ function Store() {
                 user={item.user}
               />
             ))}
+          <OrderWindow />
         </div>
       </div>
     </div>
