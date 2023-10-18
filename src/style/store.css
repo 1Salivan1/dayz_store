@@ -2,6 +2,10 @@
   padding: 0px 80px;
 }
 
+.store {
+  position: relative;
+}
+
 .store-search__input {
   margin-right: 15px;
   height: 20px;

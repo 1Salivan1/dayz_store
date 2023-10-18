@@ -19,6 +19,9 @@ function Store() {
   const [goods, setGoods] = React.useState<IItem[]>([]);
   const [input, setInput] = React.useState<string>("");
   const [currentData, setCurrentData] = React.useState<IItem[]>([]);
+  const [orderInfo, setOrderInfo] = React.useState<IItem[]>([]);
+  const [orderWindowActive, setOrderWindowActive] =
+    React.useState<boolean>(false);
 
   // Загрузка данных с бека
   useEffect(() => {
@@ -30,8 +33,7 @@ function Store() {
       })
       .catch((error) => {
         console.error("Ошибка при получении данных");
-      })
-      .finally(() => console.log("currentData"));
+      });
   }, [url]);
 
   // Поиск товаров через инпут
@@ -102,6 +104,14 @@ function Store() {
     }
   };
 
+  const handleBuy = (value: IItem[]) => {
+    setOrderInfo(value);
+  };
+
+  const handleOrderWindow = () => {
+    setOrderWindowActive(!orderWindowActive);
+  };
+
   return (
     <div className="wrapper">
       <div className="store">
@@ -165,9 +175,21 @@ function Store() {
                 quantity={item.quantity}
                 price={item.price}
                 user={item.user}
+                handleBuy={handleBuy}
+                handleOrderWindow={handleOrderWindow}
               />
             ))}
-          <OrderWindow />
+          {orderInfo.map((item) => (
+            <OrderWindow
+              img={item.image}
+              name={item.name}
+              user={item.user}
+              price={item.price}
+              quantity={item.quantity}
+              active={orderWindowActive}
+              handleOrderWindow={handleOrderWindow}
+            />
+          ))}
         </div>
       </div>
     </div>

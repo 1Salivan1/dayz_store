@@ -1,5 +1,16 @@
 import { table } from "console";
 import "../style/ProductCard.css";
+import OrderWindow from "./OrderWindow";
+
+interface IItem {
+  id: number;
+  image: string;
+  name: string;
+  type: string;
+  quantity: number;
+  price: number;
+  user: string;
+}
 
 interface IProductCardProps {
   id: number;
@@ -9,6 +20,8 @@ interface IProductCardProps {
   price: number;
   type: string;
   user: string;
+  handleBuy: (value: IItem[]) => void;
+  handleOrderWindow: () => void;
 }
 
 function ProductCard(props: IProductCardProps) {
@@ -20,7 +33,15 @@ function ProductCard(props: IProductCardProps) {
       <p className="card-price card-item">{props.price}$</p>
       <p className="card-user card-item">{props.user}</p>
       <div className="button-block">
-        <button className="card-button">Купить</button>
+        <button
+          className="card-button"
+          onClick={() => {
+            props.handleBuy([props]);
+            props.handleOrderWindow();
+          }}
+        >
+          Купить
+        </button>
       </div>
     </div>
   );
