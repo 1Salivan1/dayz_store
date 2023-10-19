@@ -62,7 +62,15 @@ function OrderWindow(props: IProps) {
             <p className="final-price">
               К оплате: {props.price * Number(rangeValue)}$
             </p>
-            <button className="bottom-button">Купить</button>
+            <button
+              className="bottom-button"
+              onClick={() => {
+                props.handleOrderWindow();
+                alert("Спасибо за покупку, продавец с вами свяжется");
+              }}
+            >
+              Купить
+            </button>
           </div>
         </div>
       </div>
