@@ -1,6 +1,5 @@
-import React, { useEffect, ChangeEvent } from "react";
+import React, { useEffect, ChangeEvent, useState } from "react";
 import { useAppDispatch, useAppSelector } from "../hooks/hook";
-import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import "../style/store.css";
 import OrderWindow from "../components/OrderWindow";
@@ -17,86 +16,97 @@ interface IItem {
 }
 
 function Store() {
-  const [goods, setGoods] = React.useState<IItem[]>([]);
-  const [input, setInput] = React.useState<string>("");
-  const [currentData, setCurrentData] = React.useState<IItem[]>([]);
-  const [orderInfo, setOrderInfo] = React.useState<IItem[]>([]);
-  const [orderWindowActive, setOrderWindowActive] =
-    React.useState<boolean>(false);
-  const dispatch = useAppDispatch();
   const products = useAppSelector((state) => state.products);
-  console.log(currentData);
+  const [input, setInput] = useState<string>("");
+  const [currentData, setCurrentData] = useState<IItem[]>(products);
+  const [orderInfo, setOrderInfo] = useState<IItem[]>([]);
+  const [orderWindowActive, setOrderWindowActive] = useState<boolean>(false);
+  const [byName, setByName] = useState<string | null>(null);
+  const [byPrice, setByPrice] = useState<string | null>(null);
+  const [byQuantity, setByQuantity] = useState<string | null>(null);
+  const dispatch = useAppDispatch();
 
   useEffect(() => {
     dispatch(fetchProducts());
-    setCurrentData(products);
   }, [dispatch]);
 
-  // Поиск товаров через инпут
-  const filteredGoods = currentData.filter((item) =>
-    item.name.toLowerCase().includes(input.toLowerCase())
-  );
+  useEffect(() => {
+    setCurrentData(products);
+  }, [products]);
 
   // Сортировка товаров с помощью select
   const selectSort = (e: ChangeEvent<HTMLSelectElement>) => {
     if (e.target.value == "all") {
-      setCurrentData(goods);
-    } else if (e.target.value.toLowerCase() == "build") {
-      setCurrentData(goods.filter((e) => e.type == "build"));
-    } else if (e.target.value.toLowerCase() == "weapon") {
-      setCurrentData(goods.filter((e) => e.type == "weapon"));
-    } else if (e.target.value.toLowerCase() == "food") {
-      setCurrentData(goods.filter((e) => e.type == "food"));
-    } else if (e.target.value.toLowerCase() == "transport") {
-      setCurrentData(goods.filter((e) => e.type == "transport"));
+      setCurrentData(products);
+    } else if (e.target.value.toLowerCase() === "build") {
+      setCurrentData(products.filter((e) => e.type === "build"));
+    } else if (e.target.value.toLowerCase() === "weapon") {
+      setCurrentData(products.filter((e) => e.type === "weapon"));
+    } else if (e.target.value.toLowerCase() === "food") {
+      setCurrentData(products.filter((e) => e.type === "food"));
+    } else if (e.target.value.toLowerCase() === "transport") {
+      setCurrentData(products.filter((e) => e.type === "transport"));
     }
   };
 
   // Сортировка по названию
   const sortByName = () => {
-    setByPrice(1);
-    setByQuantity(1);
-    if (currentData.length > 0) {
-      currentData.sort((x, y) => x.name.localeCompare(y.name));
-      setCurrentData([...currentData]);
+    const data = [...currentData];
+    setByPrice(null);
+    setByQuantity(null);
+    if (byName === null) {
+      setByName("a-z");
+      data.sort((a, b) => a.name.localeCompare(b.name));
+      setCurrentData(data);
+    } else if (byName === "a-z") {
+      setByName("z-a");
+      data.sort((a, b) => b.name.localeCompare(a.name));
+      setCurrentData(data);
+    } else if (byName === "z-a") {
+      setByName("a-z");
+      data.sort((a, b) => a.name.localeCompare(b.name));
+      setCurrentData(data);
     }
-  };
-
-  // Сортировка по количеству
-  const [sortByQuantityToggle, setSortByQuantityToggle] =
-    React.useState<boolean>(false);
-  const [byQuantity, setByQuantity] = React.useState<number>(1); // Переключатель 0 - ↑, 1 - нейтрально, 2 - ↓.
-  const sortByQuantity = () => {
-    setByPrice(1); // Нейтральное положение остальных сортировок
-    if (currentData.length > 0 && sortByQuantityToggle === false) {
-      currentData.sort((x, y) => x.quantity - y.quantity);
-      setCurrentData([...currentData]);
-      setSortByQuantityToggle(true);
-      setByQuantity(0);
-    } else {
-      currentData.sort((x, y) => y.quantity - x.quantity);
-      setCurrentData([...currentData]);
-      setSortByQuantityToggle(false);
-      setByQuantity(2);
-    }
+    console.log(byName);
   };
 
   // Сортировка по цене
-  const [sortByPriceToggle, setSortByPriceToggle] =
-    React.useState<boolean>(false);
-  const [byPrice, setByPrice] = React.useState<number>(1); // Переключатель 0 - ↑, 1 - нейтрально, 2 - ↓.
   const sortByPrice = () => {
-    setByQuantity(1); // Нейтральное положение остальных сортировок
-    if (currentData.length > 0 && sortByPriceToggle === false) {
-      currentData.sort((x, y) => x.price - y.price);
-      setCurrentData([...currentData]);
-      setSortByPriceToggle(true);
-      setByPrice(0);
+    const data = [...currentData];
+    setByQuantity(null);
+    setByName(null);
+    if (byPrice === null) {
+      setByPrice("high");
+      data.sort((a, b) => a.price - b.price);
+      setCurrentData(data);
+    } else if (byPrice === "high") {
+      setByPrice("low");
+      data.sort((a, b) => b.price - a.price);
+      setCurrentData(data);
     } else {
-      currentData.sort((x, y) => y.price - x.price);
-      setCurrentData([...currentData]);
-      setSortByPriceToggle(false);
-      setByPrice(2);
+      setByPrice("high");
+      data.sort((a, b) => a.price - b.price);
+      setCurrentData(data);
+    }
+  };
+
+  // Сортрировка по количеству
+  const sortByQuantity = () => {
+    const data = [...currentData];
+    setByPrice(null);
+    setByName(null);
+    if (byQuantity === null) {
+      setByQuantity("high");
+      data.sort((a, b) => a.quantity - b.quantity);
+      setCurrentData(data);
+    } else if (byQuantity === "high") {
+      setByQuantity("low");
+      data.sort((a, b) => b.quantity - a.quantity);
+      setCurrentData(data);
+    } else {
+      setByQuantity("high");
+      data.sort((a, b) => a.quantity - b.quantity);
+      setCurrentData(data);
     }
   };
 
@@ -135,12 +145,16 @@ function Store() {
         </div>
         <div className="store-offers">
           <div className="sort">
-            <p className="sort-by-name sort-item" onClick={sortByName}>
+            <p className="sort-by-name sort-item" onClick={() => sortByName()}>
               По названию
             </p>
             <p
               className={`sort-by-price sort-item ${
-                byQuantity === 0 ? "by-top" : byQuantity === 2 ? "by-down" : ""
+                byQuantity === "high"
+                  ? "by-top"
+                  : byQuantity === "low"
+                  ? "by-down"
+                  : ""
               }`}
               onClick={sortByQuantity}
             >
@@ -148,14 +162,18 @@ function Store() {
             </p>
             <p
               className={`sort-by-price sort-item ${
-                byPrice === 0 ? "by-top" : byPrice === 2 ? "by-down" : ""
+                byPrice === "high"
+                  ? "by-top"
+                  : byPrice === "low"
+                  ? "by-down"
+                  : ""
               }`}
-              onClick={sortByPrice}
+              onClick={() => sortByPrice()}
             >
               По цене
             </p>
           </div>
-          {products
+          {currentData
             .filter((el) => {
               return input.toLowerCase() === ""
                 ? el
