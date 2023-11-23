@@ -1,8 +1,10 @@
 import React, { useEffect, ChangeEvent } from "react";
+import { useAppDispatch, useAppSelector } from "../hooks/hook";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
 import "../style/store.css";
 import OrderWindow from "../components/OrderWindow";
+import { fetchProducts } from "../store/productSlice";
 
 interface IItem {
   id: number;
@@ -13,7 +15,6 @@ interface IItem {
   price: number;
   user: string;
 }
-const url: string = "https://6478b240362560649a2e4a2c.mockapi.io/Goods";
 
 function Store() {
   const [goods, setGoods] = React.useState<IItem[]>([]);
@@ -22,22 +23,17 @@ function Store() {
   const [orderInfo, setOrderInfo] = React.useState<IItem[]>([]);
   const [orderWindowActive, setOrderWindowActive] =
     React.useState<boolean>(false);
+  const dispatch = useAppDispatch();
+  const products = useAppSelector((state) => state.products);
+  console.log(currentData);
 
-  // Загрузка данных с бека
   useEffect(() => {
-    axios
-      .get(url)
-      .then((response) => {
-        setGoods(response.data);
-        setCurrentData(response.data);
-      })
-      .catch((error) => {
-        console.error("Ошибка при получении данных");
-      });
-  }, [url]);
+    dispatch(fetchProducts());
+    setCurrentData(products);
+  }, [dispatch]);
 
   // Поиск товаров через инпут
-  const filteredGoods = goods.filter((item) =>
+  const filteredGoods = currentData.filter((item) =>
     item.name.toLowerCase().includes(input.toLowerCase())
   );
 
@@ -159,7 +155,7 @@ function Store() {
               По цене
             </p>
           </div>
-          {currentData
+          {products
             .filter((el) => {
               return input.toLowerCase() === ""
                 ? el
