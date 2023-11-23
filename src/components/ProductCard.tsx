@@ -1,6 +1,4 @@
-import { table } from "console";
 import "../style/ProductCard.css";
-import OrderWindow from "./OrderWindow";
 
 interface IItem {
   id: number;

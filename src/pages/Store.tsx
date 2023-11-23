@@ -36,7 +36,7 @@ function Store() {
 
   // Сортировка товаров с помощью select
   const selectSort = (e: ChangeEvent<HTMLSelectElement>) => {
-    if (e.target.value == "all") {
+    if (e.target.value === "all") {
       setCurrentData(products);
     } else if (e.target.value.toLowerCase() === "build") {
       setCurrentData(products.filter((e) => e.type === "build"));
